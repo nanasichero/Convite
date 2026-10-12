@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Aniversário da Tatá 🎉</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Biblioteca externa para animação de confetes -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(rgba(15, 23, 42, 0.65), rgba(15, 23, 42, 0.75)), url('fundo.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ffffff;
+            padding: 24px;
+        }
+
+        /* Cartão Liquid Glass */
+        .card {
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.4);
+            border-left: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 40px 32px;
+            border-radius: 36px;
+            text-align: center;
+            max-width: 480px;
+            width: 100%;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6), 
+                        inset 0 0 20px rgba(255, 255, 255, 0.05);
+            animation: fadeIn 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        #timezone-screen {
+            display: block;
+        }
+
+        #invitation-screen {
+            display: none;
+        }
+
+        .tz-select {
+            width: 100%;
+            padding: 14px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #ffffff;
+            font-size: 0.95rem;
+            margin: 20px 0;
+            outline: none;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+        }
+
+        .tz-select option {
+            background: #0f172a;
+            color: #ffffff;
+            padding: 10px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(56, 189, 248, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #38bdf8;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 6px;
+            color: #ffffff;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+            color: rgba(255, 255, 255, 0.75);
+            font-weight: 300;
+        }
+
+        .details {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 22px;
+            border-radius: 20px;
+            margin-bottom: 18px;
+            text-align: left;
+        }
+
+        .details p {
+            margin-bottom: 10px;
+            font-size: 0.93rem;
+            line-height: 1.4;
+            color: #f8fafc;
+        }
+
+        .details p:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .kids-highlight {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.25), rgba(245, 158, 11, 0.3));
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(251, 191, 36, 0.45);
+            padding: 16px;
+            border-radius: 16px;
+            margin-top: 14px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.2);
+        }
+
+        .kids-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #fef08a;
+            margin-bottom: 4px;
+        }
+
+        .kids-desc {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.92);
+            line-height: 1.4;
+        }
+
+        .features {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 16px;
+            border-radius: 20px;
+            margin-bottom: 22px;
+            text-align: left;
+        }
+
+        .features h3 {
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+        }
+
+        .features ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .features li {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.83rem;
+            color: #e2e8f0;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .time-box {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 12px 4px;
+            border-radius: 16px;
+        }
+
+        .time-box span {
+            display: block;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .time-box small {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #38bdf8, #0284c7);
+            color: white;
+            padding: 14px 24px;
+            border-radius: 16px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.93rem;
+            box-shadow: 0 10px 25px rgba(56, 189, 248, 0.35);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(56, 189, 248, 0.5);
+            filter: brightness(1.1);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-surprise {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #ffffff;
+            font-weight: 700;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.35);
+        }
+
+        .btn-surprise:hover {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            box-shadow: 0 15px 30px rgba(245, 158, 11, 0.5);
+        }
+
+        #mensagem-surpresa {
+            display: none;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            padding: 16px;
+            border-radius: 16px;
+            margin-bottom: 18px;
+            font-size: 0.9rem;
+            color: #ffffff;
+            animation: fadeIn 0.5s ease-in-out;
+            border-left: 4px solid #f59e0b;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            text-align: left;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <!-- TELA 1: SELEÇÃO DE FUSO HORÁRIO MUNDIAL -->
+        <div id="timezone-screen">
+            <div class="badge">Bem-vindo(a)</div>
+            <h1>🌍 Selecione seu Fuso</h1>
+            <p class="subtitle">Escolha sua região para ajustar o horário e o idioma da festa:</p>
+            
+            <select id="user-timezone" class="tz-select">
+                <option value="" disabled selected>-- Américas --</option>
+                <option value="America/Sao_Paulo" data-lang="pt">🇧🇷 Brasília / São Paulo (GMT-3)</option>
+                <option value="America/Manaus" data-lang="pt">🇧🇷 Manaus / Amazônia (GMT-4)</option>
+                <option value="America/Rio_Branco" data-lang="pt">🇧🇷 Acre (GMT-5)</option>
+                <option value="America/Argentina/Buenos_Aires" data-lang="es">🇦🇷 Argentina (Buenos Aires)</option>
+                <option value="America/Santiago" data-lang="es">🇨🇱 Chile (Santiago)</option>
+                <option value="America/Bogota" data-lang="es">🇨🇴 Colômbia (Bogotá)</option>
+                <option value="America/Lima" data-lang="es">🇵🇪 Peru (Lima)</option>
+                <option value="America/Mexico_City" data-lang="es">🇲🇽 México (Cidade do México)</option>
+                <option value="America/New_York" data-lang="en">🇺🇸 EUA - Costa Leste (NYC)</option>
+                <option value="America/Chicago" data-lang="en">🇺🇸 EUA - Central (Chicago)</option>
+                <option value="America/Denver" data-lang="en">🇺🇸 EUA - Montanha (Denver)</option>
+                <option value="America/Los_Angeles" data-lang="en">🇺🇸 EUA - Costa Oeste (LA)</option>
+                <option value="America/Vancouver" data-lang="en">🇨🇦 Canadá - Costa Oeste (Vancouver)</option>
+                <option value="America/Toronto" data-lang="en">🇨🇦 Canadá - Costa Leste (Toronto)</option>
+
+                <option value="" disabled>──────────────</option>
+                <option value="" disabled>-- Europa --</option>
+                <option value="Europe/Lisbon" data-lang="pt">🇵🇹 Portugal (Lisboa)</option>
+                <option value="Europe/Madrid" data-lang="es">🇪🇸 Espanha (Madri)</option>
+                <option value="Europe/London" data-lang="en">🇬🇧 Reino Unido (Londres)</option>
+                <option value="Europe/Paris" data-lang="fr">🇫🇷 França (Paris)</option>
+                <option value="Europe/Berlin" data-lang="de">🇩🇪 Alemanha (Berlim)</option>
+                <option value="Europe/Rome" data-lang="it">🇮🇹 Itália (Roma)</option>
+                <option value="Europe/Moscow" data-lang="ru">🇷🇺 Rússia (Moscou)</option>
+                <option value="Europe/Istanbul" data-lang="tr">🇹🇷 Turquia (Istambul)</option>
+                <option value="Europe/Kiev" data-lang="uk">🇺🇦 Ucrânia (Kiev)</option>
+                <option value="Europe/Zurich" data-lang="de">🇨🇭 Suíça (Zurique)</option>
+
+                <option value="" disabled>──────────────</option>
+                <option value="" disabled>-- África --</option>
+                <option value="Africa/Cairo" data-lang="ar">🇪🇬 Egito (Cairo)</option>
+                <option value="Africa/Johannesburg" data-lang="en">🇿🇦 África do Sul (Joanesburgo)</option>
+                <option value="Africa/Lagos" data-lang="en">🇳🇬 Nigéria (Lagos)</option>
+                <option value="Africa/Nairobi" data-lang="en">🇰🇪 Quênia (Nairobi)</option>
+                <option value="Africa/Casablanca" data-lang="ar">🇲🇦 Marrocos (Casablanca)</option>
+
+                <option value="" disabled>──────────────</option>
+                <option value="" disabled>-- Ásia --</option>
+                <option value="Asia/Dubai" data-lang="ar">🇦🇪 Emirados Árabes (Dubai)</option>
+                <option value="Asia/Jerusalem" data-lang="en">🇮🇱 Israel (Jerusalém)</option>
+                <option value="Asia/Tehran" data-lang="fa">🇮🇷 Irã (Teerã)</option>
+                <option value="Asia/Kolkata" data-lang="en">🇮🇳 Índia (Nova Délhi)</option>
+                <option value="Asia/Bangkok" data-lang="th">🇹🇭 Tailândia (Bangkok)</option>
+                <option value="Asia/Singapore" data-lang="en">🇸🇬 Cingapura (Cingapura)</option>
+                <option value="Asia/Tokyo" data-lang="ja">🇯🇵 Japão (Tóquio)</option>
+                <option value="Asia/Seoul" data-lang="ko">🇰🇷 Coreia do Sul (Seul)</option>
+                <option value="Asia/Shanghai" data-lang="zh">🇨🇳 China (Xangai)</option>
+                <option value="Asia/Hong_Kong" data-lang="zh">🇭🇰 Hong Kong (Hong Kong)</option>
+                <option value="Asia/Manila" data-lang="en">🇵🇭 Filipinas (Manila)</option>
+                <option value="Asia/Jakarta" data-lang="id">🇮🇩 Indonésia (Jacarta)</option>
+
+                <option value="" disabled>──────────────</option>
+                <option value="" disabled>-- Oceania --</option>
+                <option value="Australia/Sydney" data-lang="en">🇦🇺 Austrália (Sydney)</option>
+                <option value="Australia/Perth" data-lang="en">🇦🇺 Austrália (Perth)</option>
+                <option value="Pacific/Auckland" data-lang="en">🇳🇿 Nova Zelândia (Auckland)</option>
+                <option value="Pacific/Fiji" data-lang="en">🇫🇯 Fiji (Fiji)</option>
+
+                <option value="" disabled>──────────────</option>
+                <option value="UTC" data-lang="en">🌍 UTC / Universal Time</option>
+            </select>
+
+            <button onclick="entrarConvite()" class="btn">✨ Ver Convite</button>
+        </div>
+
+        <!-- TELA 2: CONVITE OFICIAL -->
+        <div id="invitation-screen">
+            <div class="badge" id="t-badge">Convite Oficial</div>
+            <h1 id="t-title">Aniversário da Tatá</h1>
+            <p class="subtitle" id="t-subtitle">Você é meu convidado(a) especial para celebrar!</p>
+
+            <div class="details">
+                <p>📅 <strong id="party-date-text">Data: 21 de Novembro de 2026</strong></p>
+                <p>⏰ <strong id="party-time-text">Horário: 13:00 às 00:00</strong></p>
+                <p>📍 <strong id="t-local">Local:</strong> Quintal do Espeto - Vila Mariana</p>
+                <p style="font-size: 0.83rem; color: rgba(255,255,255,0.65); margin-top: 4px;">R. Joaquim Távora, 1195 - São Paulo - SP</p>
+                
+                <div class="kids-highlight">
+                    <div class="kids-title" id="t-kids-title">👶 Traga a nossa criançada!</div>
+                    <div class="kids-desc" id="t-kids-desc">Espaço kids completo e especialmente pensado para a nossa criançada se divertir muito.</div>
+                </div>
+            </div>
+
+            <div class="features">
+                <h3 id="t-features-title">O que o espaço oferece</h3>
+                <ul>
+                    <li id="f-1">🎵 Música ao Vivo</li>
+                    <li id="f-2">🍢 +70 Tipos de Espetos</li>
+                    <li id="f-3">🌳 Ambiente Arborizado</li>
+                    <li id="f-4">📺 Telões e TVs</li>
+                    <li id="f-5">🎈 Espaço Kids</li>
+                    <li id="f-6">🚗 Serviço de Valet</li>
+                </ul>
+            </div>
+
+            <div id="mensagem-surpresa">
+                <span id="t-msg">✨ "Preparem o fígado e o apetite! Quero todo mundo animado para comemorar um dia inesquecível com muita risada, boa comida e bebida gelada. A presença de cada um de vocês vai tornar tudo perfeito!" 💖</span>
+            </div>
+
+            <div class="countdown" id="countdown">
+                <div class="time-box"><span id="days">00</span><small id="lbl-days">Dias</small></div>
+                <div class="time-box"><span id="hours">00</span><small id="lbl-hours">Horas</small></div>
+                <div class="time-box"><span id="minutes">00</span><small id="lbl-min">Min</small></div>
+                <div class="time-box"><span id="seconds">00</span><small id="lbl-sec">Seg</small></div>
+            </div>
+
+            <div class="btn-container">
+                <button onclick="revelarMensagem()" class="btn btn-surprise" id="btn-surprise">
+                    🎁 Abrir Recado da Aniversariante
+                </button>
+
+                <a href="https://maps.google.com/?q=Rua+Joaquim+Tavora+1195+Vila+Mariana+Sao+Paulo" 
+                   target="_blank" 
+                   class="btn btn-secondary" id="btn-map">
+                   🗺️ Ver Localização no Mapa
+                </a>
+
+                <a href="pacotes.pdf" 
+                   target="_blank" 
+                   class="btn btn-secondary" id="btn-menu">
+                   🍽️ Ver Cardápio
+                </a>
+
+                <a href="https://forms.gle/iM3jSJyHt7PhYYF27" 
+                   target="_blank" 
+                   class="btn" id="btn-rsvp">
+                   ✅ Confirme o Comparecimento
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const partyTimestampUTC = Date.UTC(2026, 10, 21, 16, 0, 0);
+        const partyEndTimestampUTC = Date.UTC(2026, 10, 22, 3, 0, 0);
+        let timerInterval;
+
+        const translations = {
+            pt: {
+                badge: "Convite Oficial", title: "Aniversário da Tatá", subtitle: "Você é meu convidado(a) especial para celebrar!",
+                local: "Local:", kidsTitle: "👶 Traga a nossa criançada!", kidsDesc: "Espaço kids completo e especialmente pensado para a nossa criançada se divertir muito.",
+                featuresTitle: "O que o espaço oferece", f1: "🎵 Música ao Vivo", f2: "🍢 +70 Tipos de Espetos", f3: "🌳 Ambiente Arborizado", f4: "📺 Telões e TVs", f5: "🎈 Espaço Kids", f6: "🚗 Serviço de Valet",
+                msg: '✨ "Preparem o fígado e o apetite! Quero todo mundo animado para comemorar um dia inesquecível com muita risada, boa comida e bebida gelada. A presença de cada um de vocês vai tornar tudo perfeito!" 💖',
+                d: "Dias", h: "Horas", m: "Min", s: "Seg",
+                btnSurprise: "🎁 Abrir Recado da Aniversariante", btnMap: "🗺️ Ver Localização no Mapa", btnMenu: "🍽️ Ver Cardápio", btnRsvp: "✅ Confirme o Comparecimento", eventStarted: "O evento começou! 🥳"
+            },
+            en: {
+                badge: "Official Invitation", title: "Tatá's Birthday", subtitle: "You are my special guest to celebrate!",
+                local: "Location:", kidsTitle: "👶 Bring our kids!", kidsDesc: "Complete kids area specially designed for our children to have a great time.",
+                featuresTitle: "What the venue offers", f1: "🎵 Live Music", f2: "🍢 +70 Types of Skewers", f3: "🌳 Green Environment", f4: "📺 Screens & TVs", f5: "🎈 Kids Area", f6: "🚗 Valet Parking",
+                msg: '✨ "Get ready with your appetite! I want everyone excited to celebrate an unforgettable day with lots of laughter, great food, and cold drinks. Having you all there will make it perfect!" 💖',
+                d: "Days", h: "Hours", m: "Min", s: "Sec",
+                btnSurprise: "🎁 Open Birthday Message", btnMap: "🗺️ View Location on Map", btnMenu: "🍽️ View Menu", btnRsvp: "✅ Confirm Attendance", eventStarted: "The event has started! 🥳"
+            },
+            es: {
+                badge: "Invitación Oficial", title: "Cumpleaños de Tatá", subtitle: "¡Eres mi invitado(a) especial para celebrar!",
+                local: "Lugar:", kidsTitle: "👶 ¡Trae a nuestra crianza / niños!", kidsDesc: "Área de juegos completa y especialmente pensada para que nuestra crianza se divierta mucho.",
+                featuresTitle: "Lo que ofrece el lugar", f1: "🎵 Música en Vivo", f2: "🍢 +70 Tipos de Brochetas", f3: "🌳 Ambiente Arbolado", f4: "📺 Pantallas y TVs", f5: "🎈 Zona Infantil", f6: "🚗 Servicio de Valet",
+                msg: '✨ "¡Preparen el apetito! Quiero a todos animados para celebrar un día inolvidable con muchas risas, buena comida y bebida fría. Su presencia lo hará perfecto." 💖',
+                d: "Días", h: "Horas", m: "Min", s: "Seg",
+                btnSurprise: "🎁 Abrir Recado de la Cumpleañera", btnMap: "🗺️ Ver Ubicación en el Mapa", btnMenu: "🍽️ Ver Menú", btnRsvp: "✅ Confirmar Asistencia", eventStarted: "¡El evento ha comenzado! 🥳"
+            },
+            fr: {
+                badge: "Invitation Officielle", title: "Anniversaire de Tatá", subtitle: "Tu es mon invité(e) spécial(e) pour célébrer !",
+                local: "Lieu :", kidsTitle: "👶 Amenez nos enfants !", kidsDesc: "Espace enfants complet et spécialement conçu pour que nos enfants s'amusent beaucoup.",
+                featuresTitle: "Ce que propose le lieu", f1: "🎵 Musique Live", f2: "🍢 +70 Types de Brochettes", f3: "🌳 Environnement Arboré", f4: "📺 Écrans & TV", f5: "🎈 Espace Enfants", f6: "🚗 Service Voiturier",
+                msg: '✨ "Préparez votre appétit ! Je veux tout le monde motivé pour fêter une journée inoubliable avec beaucoup de rires, de bons plats et des boissons fraîches. Votre présence rendra tout parfait !" 💖',
+                d: "Jours", h: "Heures", m: "Min", s: "Sec",
+                btnSurprise: "🎁 Ouvrir le Message de l'Anniversaire", btnMap: "🗺️ Voir sur la Carte", btnMenu: "🍽️ Voir le Menu", btnRsvp: "✅ Confirmer la Présence", eventStarted: "L'événement a commencé ! 🥳"
+            },
+            de: {
+                badge: "Offizielle Einladung", title: "Tatá's Geburtstag", subtitle: "Du bist mein spezieller Gast zum Feiern!",
+                local: "Ort:", kidsTitle: "👶 Bring unsere Kinder mit!", kidsDesc: "Kompletter Kinderspielbereich, speziell dafür entworfen, dass sich unsere Kinder gut austoben.",
+                featuresTitle: "Was der Veranstaltungsort bietet", f1: "🎵 Live-Musik", f2: "🍢 +70 Arten von Spießen", f3: "🌳 Grüne Umgebung", f4: "📺 Bildschirme & Fernseher", f5: "🎈 Kinderbereich", f6: "🚗 Parkservice",
+                msg: '✨ "Macht den Appetit bereit! Ich möchte, dass alle motiviert sind, einen unvergesslichen Tag mit viel Lachen, gutem Essen und kalten Getränken zu feiern. Eure Anwesenheit wird alles perfekt machen!" 💖',
+                d: "Tage", h: "Stunden", m: "Min", s: "Sek",
+                btnSurprise: "🎁 Geburtstagsticker öffnen", btnMap: "🗺️ Standort auf Karte ansehen", btnMenu: "🍽️ Menü ansehen", btnRsvp: "✅ Teilnahme bestätigen", eventStarted: "Die Veranstaltung hat begonnen! 🥳"
+            },
+            it: {
+                badge: "Invito Ufficiale", title: "Compleanno di Tatá", subtitle: "Sei il mio ospite speciale per festeggiare!",
+                local: "Luogo:", kidsTitle: "👶 Porta i nostri bambini!", kidsDesc: "Area bambini completa e pensata appositamente per far divertire molto i nostri bambini.",
+                featuresTitle: "Cosa offre il locale", f1: "🎵 Musica dal Vivo", f2: "🍢 +70 Tipi di Spiedini", f3: "🌳 Ambiente Alberato", f4: "📺 Schermi e TV", f5: "🎈 Area Bimbi", f6: "🚗 Servizio Valet",
+                msg: '✨ "Preparate l\'appetito! Voglio tutti carichi per festeggiare una giornata indimenticabile con tante risate, buon cibo e drink freddi. La presenza di ciascuno di voi renderà tutto perfetto!" 💖',
+                d: "Giorni", h: "Ore", m: "Min", s: "Sec",
+                btnSurprise: "🎁 Apri Messaggio della Festeggiata", btnMap: "🗺️ Visualizza Mappa", btnMenu: "🍽️ Vedi Menu", btnRsvp: "✅ Conferma Presenza", eventStarted: "L'evento è iniziato! 🥳"
+            },
+            ru: {
+                badge: "Официальное приглашение", title: "День рождения Таты", subtitle: "Ты мой особый гость на празднике!",
+                local: "Место:", kidsTitle: "👶 Приводите наших детей!", kidsDesc: "Детская зона, созданная специально для того, чтобы наши дети отлично повеселились.",
+                featuresTitle: "Что предлагает заведение", f1: "🎵 Живая музыка", f2: "🍢 +70 видов шашлычков", f3: "🌳 Зеленая зона", f4: "📺 Экраны и телевизоры", f5: "🎈 Детская зона", f6: "🚗 Услуга парковщика",
+                msg: '✨ "Приготовьте аппетит! Я хочу, чтобы все были воодушевлены отпраздновать незабываемый день с большим количеством смеха, вкусной едой и холодными напитками. Ваше присутствие сделает всё идеальным!" 💖',
+                d: "Дни", h: "Часы", m: "Мин", s: "Сек",
+                btnSurprise: "🎁 Открыть поздравление именинницы", btnMap: "🗺️ Посмотреть на карте", btnMenu: "🍽️ Меню", btnRsvp: "✅ Подтвердить участие", eventStarted: "Мероприятие началось! 🥳"
+            },
+            tr: {
+                badge: "Resmi Davetiye", title: "Tatá'nın Doğum Günü", subtitle: "Kutlamak için özel misafirimsin!",
+                local: "Yer:", kidsTitle: "👶 Bizim çocukları da getirin!", kidsDesc: "Çocuklarımızın çok eğlenmesi için özel olarak tasarlanmış tam donanımlı çocuk alanı.",
+                featuresTitle: "Mekanın sundukları", f1: "🎵 Canlı Müzik", f2: "🍢 +70 Çeşit Şiş", f3: "🌳 Ağaçlıklı Ortam", f4: "📺 Ekranlar ve TV'ler", f5: "🎈 Çocuk Alanı", f6: "🚗 Vale Hizmeti",
+                msg: '✨ "İştahınızı hazırlayın! Bol kahkaha, harika yemekler ve soğuk içeceklerle unutulmaz bir gün kutlamak için herkesin enerjik olmasını istiyorum. Hepinizin varlığı her şeyi mükemmel kılacak!" 💖',
+                d: "Gün", h: "Saat", m: "Dak", s: "San",
+                btnSurprise: "🎁 Doğum Günü Mesajını Aç", btnMap: "🗺️ Haritada Gör", btnMenu: "🍽️ Menüyü Gör", btnRsvp: "✅ Katılımı Onayla", eventStarted: "Etkinlik başladı! 🥳"
+            },
+            ja: {
+                badge: "公式招待状", title: "タタの誕生日", subtitle: "お祝いのための大切なゲストです！",
+                local: "場所:", kidsTitle: "👶 子供たちも一緒にどうぞ！", kidsDesc: "子供たちが存分に楽しめるように特別に設計されたキッズスペース完備。",
+                featuresTitle: "会場の設備", f1: "🎵 生演奏", f2: "🍢 70種類以上の串焼き", f3: "🌳 緑豊かな環境", f4: "📺 スクリーンとテレビ", f5: "🎈 キッズエリア", f6: "🚗 バレーパーキング",
+                msg: '✨ "食欲をそそっていきましょう！たくさんの笑い声、美味しい料理、冷たい飲み物で忘れられない一日をみんなで楽しくお祝いしたいです。皆さんのご出席がすべてを完璧にしてくれます！" 💖',
+                d: "日", h: "時間", m: "分", s: "秒",
+                btnSurprise: "🎁 主人公からのメッセージを開く", btnMap: "🗺️ マップで見る", btnMenu: "🍽️ メニューを見る", btnRsvp: "✅ 出欠席を確認する", eventStarted: "イベントが始まりました！ 🥳"
+            },
+            ko: {
+                badge: "공식 초대장", title: "타타의 생일", subtitle: "축하를 위한 특별한 손님입니다!",
+                local: "장소:", kidsTitle: "👶 아이들도 함께 데려오세요!", kidsDesc: "아이들이 마음껏 즐겁게 놀 수 있도록 특별히 설계된 키즈 존.",
+                featuresTitle: "제공되는 편의시설", f1: "🎵 라이브 음악", f2: "🍢 70가지 이상의 꼬치", f3: "🌳 친환경 정원", f4: "📺 스크린 및 TV", f5: "🎈 키즈 존", f6: "🚗 발렛 파킹",
+                msg: '✨ "식욕을 돋우고 준비하세요! 웃음이 가득하고 맛있는 음식, 시원한 음료와 함께 잊지 못할 하루를 모두 함께 신나게 축하하고 싶어요. 여러분 모두의 참석이 이 날을 완벽하게 만들어 줄 거예요!" 💖',
+                d: "일", h: "시간", m: "분", s: "초",
+                btnSurprise: "🎁 생일 축하 메시지 열기", btnMap: "🗺️ 지도에서 보기", btnMenu: "🍽️ 뉴 보기", btnRsvp: "✅ 참석 확인", eventStarted: "행사가 시작되었습니다! 🥳"
+            },
+            zh: {
+                badge: "正式邀请函", title: "塔塔的生日", subtitle: "您是我庆祝活动的特邀嘉宾！",
+                local: "地点：", kidsTitle: "👶 带上小朋友们！", kidsDesc: "专为小朋友们开心玩耍而精心设计的儿童乐园。",
+                featuresTitle: "场地设施", f1: "🎵 现场音乐", f2: "🍢 70多种串烧", f3: "🌳 绿树成荫", f4: "📺 电视大屏幕", f5: "🎈 儿童区", f6: "🚗 代客泊车",
+                msg: '✨ "准备好胃口和热情吧！我希望大家都能高高兴兴地来庆祝这个难忘的日子，有欢笑、有美食、有冰镇饮料。有你们大家的出席，一切都会变得完美！" 💖',
+                d: "天", h: "小时", m: "分", s: "秒",
+                btnSurprise: "🎁 打开寿星寄语", btnMap: "🗺️ 在地图上查看", btnMenu: "🍽️ 查看菜单", btnRsvp: "✅ 确认出席", eventStarted: "活动已开始！ 🥳"
+            },
+            ar: {
+                badge: "دعوة رسمية", title: "عيد ميلاد تاتا", subtitle: "أنت ضيفي المميز للاحتفال!",
+                local: "المكان:", kidsTitle: "👶 اصطحب أطفالنا!", kidsDesc: "منطقة أطفال مصممة خصيصاً لكي يستمتع أطفالنا بوقتهم بشكل كامل.",
+                featuresTitle: "ما يوفره المكان", f1: "🎵 موسيقى حية", f2: "🍢 +70 نوع من المشويات", f3: "🌳 بيئة خضراء", f4: "📺 شاشات عرض", f5: "🎈 منطقة أطفال", f6: "🚗 خدمة صف السيارات",
+                msg: '✨ "جهزوا شهيتكم! أريد الجميع في قمة الحماس للاحتفال بيوم لا يُنسى مليء بالضحك، والطعام الشهي، والمشروبات الباردة. حضور كل واحد منكم سيجعل كل شيء مثالياً!" 💖',
+                d: "أيام", h: "ساعات", m: "دقيقة", s: "ثانية",
+                btnSurprise: "🎁 فتح رسالة عيد الميلاد", btnMap: "🗺️ عرض الموقع على الخريطة", btnMenu: "🍽️ عرض القائمة", btnRsvp: "✅ تأكيد الحضور", eventStarted: "بدء الحدث! 🥳"
+            }
+        };
+
+        function entrarConvite() {
+            const select = document.getElementById("user-timezone");
+            const tzSelect = select.value;
+            
+            if (!tzSelect) {
+                alert("Por favor, selecione o seu fuso horário.");
+                return;
+            }
+
+            const selectedOption = select.options[select.selectedIndex];
+            const langCode = selectedOption.getAttribute("data-lang") || "pt";
+            const t = translations[langCode] || translations["pt"];
+
+            document.getElementById("page-title").innerText = `${t.title} 🎉`;
+            document.getElementById("t-badge").innerText = t.badge;
+            document.getElementById("t-title").innerText = t.title;
+            document.getElementById("t-subtitle").innerText = t.subtitle;
+            document.getElementById("t-local").innerText = t.local;
+            document.getElementById("t-kids-title").innerHTML = t.kidsTitle;
+            document.getElementById("t-kids-desc").innerHTML = t.kidsDesc;
+            document.getElementById("t-features-title").innerText = t.featuresTitle;
+            document.getElementById("f-1").innerText = t.f1;
+            document.getElementById("f-2").innerText = t.f2;
+            document.getElementById("f-3").innerText = t.f3;
+            document.getElementById("f-4").innerText = t.f4;
+            document.getElementById("f-5").innerText = t.f5;
+            document.getElementById("f-6").innerText = t.f6;
+            document.getElementById("t-msg").innerText = t.msg;
+            document.getElementById("lbl-days").innerText = t.d;
+            document.getElementById("lbl-hours").innerText = t.h;
+            document.getElementById("lbl-min").innerText = t.m;
+            document.getElementById("lbl-sec").innerText = t.s;
+            document.getElementById("btn-surprise").innerText = t.btnSurprise;
+            document.getElementById("btn-map").innerText = t.btnMap;
+            document.getElementById("btn-menu").innerText = t.btnMenu;
+            document.getElementById("btn-rsvp").innerText = t.btnRsvp;
+
+            document.getElementById("timezone-screen").style.display = "none";
+            document.getElementById("invitation-screen").style.display = "block";
+
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+
+            atualizarHorarioLocal(tzSelect, langCode);
+            iniciarContagem(t.eventStarted);
+        }
+
+        function atualizarHorarioLocal(tzString, lang) {
+            const optionsDate = { timeZone: tzString, day: 'numeric', month: 'long', year: 'numeric' };
+            const optionsTime = { timeZone: tzString, hour: '2-digit', minute: '2-digit' };
+            
+            const partyDateObj = new Date(partyTimestampUTC);
+            const partyEndDateObj = new Date(partyEndTimestampUTC);
+
+            const localDateStr = partyDateObj.toLocaleDateString(lang === 'en' ? 'en-US' : lang === 'es' ? 'es-ES' : lang === 'fr' ? 'fr-FR' : 'pt-BR', optionsDate);
+            const localStartTimeStr = partyDateObj.toLocaleTimeString(lang === 'en' ? 'en-US' : lang === 'es' ? 'es-ES' : 'pt-BR', optionsTime);
+            const localEndTimeStr = partyEndDateObj.toLocaleTimeString(lang === 'en' ? 'en-US' : lang === 'es' ? 'es-ES' : 'pt-BR', optionsTime);
+
+            const timeLabel = lang === 'en' ? 'Time:' : lang === 'es' ? 'Hora:' : lang === 'fr' ? 'Heure :' : lang === 'de' ? 'Uhrzeit:' : lang === 'it' ? 'Orario:' : lang === 'ru' ? 'Время:' : lang === 'tr' ? 'Saat:' : lang === 'ja' ? '時間:' : lang === 'ko' ? '시간:' : lang === 'zh' ? '时间:' : lang === 'ar' ? 'الوقت:' : 'Horário:';
+
+            document.getElementById("party-date-text").innerText = `${lang === 'en' ? 'Date:' : lang === 'es' ? 'Fecha:' : 'Data:'} ${localDateStr}`;
+            document.getElementById("party-time-text").innerText = `${timeLabel} ${localStartTimeStr} às ${localEndTimeStr}`;
+        }
+
+        function iniciarContagem(startedText) {
+            clearInterval(timerInterval);
+
+            timerInterval = setInterval(function() {
+                const now = new Date().getTime();
+                const distance = partyTimestampUTC - now;
+
+                if (distance < 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById("countdown").innerHTML = `<h3>${startedText}</h3>`;
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById("days").innerText = String(days).padStart(2, '0');
+                document.getElementById("hours").innerText = String(hours).padStart(2, '0');
+                document.getElementById("minutes").innerText = String(minutes).padStart(2, '0');
+                document.getElementById("seconds").innerText = String(seconds).padStart(2, '0');
+            }, 1000);
+        }
+
+        function revelarMensagem() {
+            const msg = document.getElementById("mensagem-surpresa");
+            if (msg.style.display === "none" || msg.style.display === "") {
+                msg.style.display = "block";
+                confetti({ particleCount: 50, angle: 60, spread: 55, origin: { x: 0 } });
+                confetti({ particleCount: 50, angle: 120, spread: 55, origin: { x: 1 } });
+            } else {
+                msg.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
