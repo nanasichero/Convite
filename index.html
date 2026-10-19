@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aniversário da Tatá 🎉</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Biblioteca externa para animação de confetes -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(rgba(15, 23, 42, 0.65), rgba(15, 23, 42, 0.75)), url('fundo.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ffffff;
+            padding: 24px;
+        }
+
+        /* Cartão Liquid Glass */
+        .card {
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.4);
+            border-left: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 40px 32px;
+            border-radius: 36px;
+            text-align: center;
+            max-width: 480px;
+            width: 100%;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6), 
+                        inset 0 0 20px rgba(255, 255, 255, 0.05);
+            animation: fadeIn 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(56, 189, 248, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #38bdf8;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 6px;
+            color: #ffffff;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+            color: rgba(255, 255, 255, 0.75);
+            font-weight: 300;
+        }
+
+        .details {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 22px;
+            border-radius: 20px;
+            margin-bottom: 18px;
+            text-align: left;
+        }
+
+        .details p {
+            margin-bottom: 10px;
+            font-size: 0.93rem;
+            line-height: 1.4;
+            color: #f8fafc;
+        }
+
+        .details p:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .kids-highlight {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.25), rgba(245, 158, 11, 0.3));
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(251, 191, 36, 0.45);
+            padding: 16px;
+            border-radius: 16px;
+            margin-top: 14px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.2);
+        }
+
+        .kids-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #fef08a;
+            margin-bottom: 4px;
+        }
+
+        .kids-desc {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.92);
+            line-height: 1.4;
+        }
+
+        .features {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 16px;
+            border-radius: 20px;
+            margin-bottom: 22px;
+            text-align: left;
+        }
+
+        .features h3 {
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+        }
+
+        .features ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .features li {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.83rem;
+            color: #e2e8f0;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .time-box {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 12px 4px;
+            border-radius: 16px;
+        }
+
+        .time-box span {
+            display: block;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .time-box small {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #38bdf8, #0284c7);
+            color: white;
+            padding: 14px 24px;
+            border-radius: 16px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.93rem;
+            box-shadow: 0 10px 25px rgba(56, 189, 248, 0.35);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(56, 189, 248, 0.5);
+            filter: brightness(1.1);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-surprise {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #ffffff;
+            font-weight: 700;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.35);
+        }
+
+        .btn-surprise:hover {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            box-shadow: 0 15px 30px rgba(245, 158, 11, 0.5);
+        }
+
+        #mensagem-surpresa {
+            display: none;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            padding: 16px;
+            border-radius: 16px;
+            margin-bottom: 18px;
+            font-size: 0.9rem;
+            color: #ffffff;
+            animation: fadeIn 0.5s ease-in-out;
+            border-left: 4px solid #f59e0b;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            text-align: left;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <!-- CONVITE OFICIAL -->
+        <div id="invitation-screen">
+            <div class="badge">Convite Oficial</div>
+            <h1>Aniversário da Tatá</h1>
+            <p class="subtitle">Você é meu convidado(a) especial para celebrar!</p>
+
+            <div class="details">
+                <p>📅 <strong>Data: 21 de Novembro de 2026</strong></p>
+                <p>⏰ <strong>Horário: 13:00 às 00:00</strong></p>
+                <p>📍 <strong>Local:</strong> Quintal do Espeto - Vila Mariana</p>
+                <p style="font-size: 0.83rem; color: rgba(255,255,255,0.65); margin-top: 4px;">R. Joaquim Távora, 1195 - São Paulo - SP</p>
+                
+                <div class="kids-highlight">
+                    <div class="kids-title">👶 Traga a nossa criançada!</div>
+                    <div class="kids-desc">Espaço kids completo e especialmente pensado para a nossa criançada se divertir muito.</div>
+                </div>
+            </div>
+
+            <div class="features">
+                <h3>O que o espaço oferece</h3>
+                <ul>
+                    <li>🎵 Música ao Vivo</li>
+                    <li>🍢 +70 Tipos de Espetos</li>
+                    <li>🌳 Ambiente Arborizado</li>
+                    <li>📺 Telões e TVs</li>
+                    <li>🎈 Espaço Kids</li>
+                    <li>🚗 Serviço de Valet</li>
+                </ul>
+            </div>
+
+            <div id="mensagem-surpresa">
+                <span>✨ "Preparem o fígado e o apetite! Quero todo mundo animado para comemorar um dia inesquecível com muita risada, boa comida e bebida gelada. A presença de cada um de vocês vai tornar tudo perfeito!" 💖</span>
+            </div>
+
+            <div class="countdown" id="countdown">
+                <div class="time-box"><span id="days">00</span><small>Dias</small></div>
+                <div class="time-box"><span id="hours">00</span><small>Horas</small></div>
+                <div class="time-box"><span id="minutes">00</span><small>Min</small></div>
+                <div class="time-box"><span id="seconds">00</span><small>Seg</small></div>
+            </div>
+
+            <div class="btn-container">
+                <button onclick="revelarMensagem()" class="btn btn-surprise">
+                    🎁 Abrir Recado da Aniversariante
+                </button>
+
+                <a href="https://maps.google.com/?q=Rua+Joaquim+Tavora+1195+Vila+Mariana+Sao+Paulo" 
+                   target="_blank" 
+                   class="btn btn-secondary">
+                   🗺️ Ver Localização no Mapa
+                </a>
+
+                <a href="pacotes.pdf" 
+                   target="_blank" 
+                   class="btn btn-secondary">
+                   🍽️ Ver Cardápio
+                </a>
+
+                <a href="https://forms.gle/iM3jSJyHt7PhYYF27" 
+                   target="_blank" 
+                   class="btn">
+                   ✅ Confirme o Comparecimento
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const partyTimestampUTC = Date.UTC(2026, 10, 21, 16, 0, 0);
+        let timerInterval;
+
+        window.onload = function() {
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+            iniciarContagem();
+        };
+
+        function iniciarContagem() {
+            clearInterval(timerInterval);
+
+            timerInterval = setInterval(function() {
+                const now = new Date().getTime();
+                const distance = partyTimestampUTC - now;
+
+                if (distance < 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById("countdown").innerHTML = `<h3>O evento começou! 🥳</h3>`;
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById("days").innerText = String(days).padStart(2, '0');
+                document.getElementById("hours").innerText = String(hours).padStart(2, '0');
+                document.getElementById("minutes").innerText = String(minutes).padStart(2, '0');
+                document.getElementById("seconds").innerText = String(seconds).padStart(2, '0');
+            }, 1000);
+        }
+
+        function revelarMensagem() {
+            const msg = document.getElementById("mensagem-surpresa");
+            if (msg.style.display === "none" || msg.style.display === "") {
+                msg.style.display = "block";
+                confetti({ particleCount: 50, angle: 60, spread: 55, origin: { x: 0 } });
+                confetti({ particleCount: 50, angle: 120, spread: 55, origin: { x: 1 } });
+            } else {
+                msg.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
